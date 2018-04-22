@@ -148,7 +148,7 @@ class Adafruit_STMPE610:
         time.sleep(.001)
 
 
-        self._write_register_byte(STMPE_SYS_CTRL2, 0x0); # turn on clocks!
+        self._write_register_byte(STMPE_SYS_CTRL2, 0x0) # turn on clocks!
         self._write_register_byte(STMPE_TSC_CTRL, STMPE_TSC_CTRL_XYZ | STMPE_TSC_CTRL_EN) # XYZ and enable!
         self._write_register_byte(STMPE_INT_EN, STMPE_INT_EN_TOUCHDET)
         self._write_register_byte(STMPE_ADC_CTRL1, STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
@@ -163,17 +163,18 @@ class Adafruit_STMPE610:
         self._write_register_byte(STMPE_INT_CTRL, STMPE_INT_CTRL_POL_HIGH | STMPE_INT_CTRL_ENABLE)
 
     def readData(self):
-        d1=self._read_byte(0xD7)
-        d2=self._read_byte(0xD7)
-        d3=self._read_byte(0xD7)
-        d4=self._read_byte(0xD7)
-        x  = d1 << 4 | d2 >> 4
-        y  = (d2 & 0xF) <<8 | d3 
-        z  = d4
+        """Request next stored reading - return tuple containing  (x,y,pressure) """
+        d1 = self._read_byte(0xD7)
+        d2 = self._read_byte(0xD7)
+        d3 = self._read_byte(0xD7)
+        d4 = self._read_byte(0xD7)
+        x = d1 << 4 | d2 >> 4
+        y = (d2 & 0xF) << 8 | d3
+        z = d4
         # reset all ints  (not sure what this does)
         if self.bufferEmpty:
             self._write_register_byte(STMPE_INT_STA, 0xFF)
-        return (x,y,z)
+        return (x, y, z)
 
     def _read_byte(self, register):
         """Read a byte register value and return it"""
@@ -185,10 +186,10 @@ class Adafruit_STMPE610:
     def touches(self):
         """
         Returns a list of touchpoint dicts, with 'x' and 'y' containing the
-        touch coordinates, and 'pressure' 
+        touch coordinates, and 'pressure'
         """
         touchpoints = []
-        (x,y,z) = self.readData()
+        (x, y, z) = self.readData()
         point = {'x':x, 'y':y, 'pressure':z}
         touchpoints.append(point)
         return touchpoints
@@ -198,8 +199,8 @@ class Adafruit_STMPE610:
     @property
     def getVersion(self):
         "Read the version number from the sensosr"
-        v1=self._read_byte(0)
-        v2=self._read_byte(1)
+        v1 = self._read_byte(0)
+        v2 = self._read_byte(1)
         version = v1<<8 | v2
         #print("version ",hex(version))
         return version
@@ -207,7 +208,7 @@ class Adafruit_STMPE610:
     @property
     def touched(self):
         "Report if any touches have been detectd"
-        touch=self._read_byte(STMPE_TSC_CTRL)&0x80
+        touch = self._read_byte(STMPE_TSC_CTRL)&0x80
         return touch == 0x80
 
 
@@ -219,7 +220,7 @@ class Adafruit_STMPE610:
     @property
     def bufferEmpty(self):
         "Buffer empty status"
-        empty=self._read_byte(STMPE_FIFO_STA) & STMPE_FIFO_STA_EMPTY
+        empty = self._read_byte(STMPE_FIFO_STA) & STMPE_FIFO_STA_EMPTY
         return empty != 0
 
 
@@ -227,7 +228,7 @@ class Adafruit_STMPE610:
     @property
     def getPoint(self):
         "Read one touch tuple from the buffer"
-        return (x,y,z)
+        return  self.readData()
 
 
 
