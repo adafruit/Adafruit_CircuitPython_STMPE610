@@ -30,12 +30,8 @@ This is a CircuitPython Driver for the STMPE610 Resistive Touch sensor
 
 # imports
 
-import time, math
+import time
 from micropython import const
-try:
-    import struct
-except ImportError:
-    import ustruct as struct
 
 
 __version__ = "0.0.0-auto.0"
@@ -141,7 +137,7 @@ class Adafruit_STMPE610:
     def __init__(self):
         """Check the STMPE610 was found"""
         # Check device version.
-        version = self.getVersion
+        version = self.get_version
         if _STMPE_VERSION != version:
             raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
         self._write_register_byte(STMPE_SYS_CTRL1, STMPE_SYS_CTRL1_RESET)
@@ -162,19 +158,19 @@ class Adafruit_STMPE610:
         self._write_register_byte(STMPE_INT_STA, 0xFF) # reset all ints
         self._write_register_byte(STMPE_INT_CTRL, STMPE_INT_CTRL_POL_HIGH | STMPE_INT_CTRL_ENABLE)
 
-    def readData(self):
+    def read_data(self):
         """Request next stored reading - return tuple containing  (x,y,pressure) """
-        d1 = self._read_byte(0xD7)
-        d2 = self._read_byte(0xD7)
-        d3 = self._read_byte(0xD7)
-        d4 = self._read_byte(0xD7)
-        x = d1 << 4 | d2 >> 4
-        y = (d2 & 0xF) << 8 | d3
-        z = d4
+        d_1 = self._read_byte(0xD7)
+        d_2 = self._read_byte(0xD7)
+        d_3 = self._read_byte(0xD7)
+        d_4 = self._read_byte(0xD7)
+        x_loc = d_1 << 4 | d_2 >> 4
+        y_loc = (d_2 & 0xF) << 8 | d_3
+        pressure = d_4
         # reset all ints  (not sure what this does)
-        if self.bufferEmpty:
+        if self.buffer_empty:
             self._write_register_byte(STMPE_INT_STA, 0xFF)
-        return (x, y, z)
+        return (x_loc, y_loc, pressure)
 
     def _read_byte(self, register):
         """Read a byte register value and return it"""
@@ -189,19 +185,19 @@ class Adafruit_STMPE610:
         touch coordinates, and 'pressure'
         """
         touchpoints = []
-        (x, y, z) = self.readData()
-        point = {'x':x, 'y':y, 'pressure':z}
+        (x_loc, y_loc, pressure) = self.read_data()
+        point = {'x':x_loc, 'y':y_loc, 'pressure':pressure}
         touchpoints.append(point)
         return touchpoints
     # pylint: enable=unused-variable
 
 
     @property
-    def getVersion(self):
+    def get_version(self):
         "Read the version number from the sensosr"
-        v1 = self._read_byte(0)
-        v2 = self._read_byte(1)
-        version = v1<<8 | v2
+        v_1 = self._read_byte(0)
+        v_2 = self._read_byte(1)
+        version = v_1<<8 | v_2
         #print("version ",hex(version))
         return version
 
@@ -213,12 +209,12 @@ class Adafruit_STMPE610:
 
 
     @property
-    def bufferSize(self):
+    def buffer_size(self):
         "The amount of touch data in the buffer"
         return self._read_byte(STMPE_FIFO_SIZE)
 
     @property
-    def bufferEmpty(self):
+    def buffer_empty(self):
         "Buffer empty status"
         empty = self._read_byte(STMPE_FIFO_STA) & STMPE_FIFO_STA_EMPTY
         return empty != 0
@@ -226,9 +222,9 @@ class Adafruit_STMPE610:
 
 
     @property
-    def getPoint(self):
+    def get_point(self):
         "Read one touch tuple from the buffer"
-        return  self.readData()
+        return  self.read_data()
 
 
 
@@ -277,5 +273,3 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         register &= 0x7F  # Write, bit 7 low.
         with self._spi as spi:
             spi.write(bytes([register, value & 0xFF]))
-
-
