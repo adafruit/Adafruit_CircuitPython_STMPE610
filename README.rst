@@ -13,7 +13,7 @@ Introduction
     :target: https://travis-ci.org/adafruit/adafruit_CircuitPython_stmpe610
     :alt: Build Status
 
-.. todo:: Describe what the library does.
+Adafruit CirCuitPython module for the SPMPE610 resistive Touch Screen Controller
 
 Dependencies
 =============
@@ -30,8 +30,7 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the examples folder and be included in docs/examples.rst.
-
+see examples in githup repository: https://github.com/adafruit/Adafruit_CIrcuitPython_STMPE610/exmaples
 Contributing
 ============
 
