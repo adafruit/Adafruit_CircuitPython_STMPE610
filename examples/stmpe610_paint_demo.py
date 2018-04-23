@@ -29,8 +29,7 @@ while True:
     if st.touched:
         while not st.buffer_empty:
             ts = st.touches
-            for _ in range(len(ts)):
-                point = ts[_]   # get the next point
+            for point in ts:
                 # perform transformation to get into display coordinate system!
                 y = point['y']
                 x = 4096 - point['x']
