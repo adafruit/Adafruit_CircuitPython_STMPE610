@@ -2,6 +2,7 @@
 
 import os
 import sys
+import micropython
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
