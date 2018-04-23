@@ -13,7 +13,7 @@ Introduction
     :target: https://travis-ci.org/adafruit/adafruit_CircuitPython_stmpe610
     :alt: Build Status
 
-Adafruit CirCuitPython module for the SPMPE610 resistive Touch Screen Controller
+Adafruit CircuitPython module for the STMPE610 Resistive Touch Screen Controller
 
 Dependencies
 =============

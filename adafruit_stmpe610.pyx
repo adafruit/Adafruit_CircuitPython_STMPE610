@@ -200,7 +200,7 @@ class Adafruit_STMPE610:
         touch coordinates, and 'pressure'
         """
         touchpoints = []
-        while (len(touchpoints) < 4) and not self.buffer_empty:
+        while (len(touchpoints) < 32) and not self.buffer_empty:
             (x_loc, y_loc, pressure) = self.read_data()
             point = {'x':x_loc, 'y':y_loc, 'pressure':pressure}
             touchpoints.append(point)
