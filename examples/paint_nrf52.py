@@ -35,4 +35,3 @@ while True:
         x = 2 * x // 30
         y = 8 * y // 90
         display.fill_rectangle(x-2, y-2, 4, 4, color565(255, 255, 255))
-
