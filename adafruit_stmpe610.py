@@ -145,11 +145,15 @@ class Adafruit_STMPE610:
 
 
         self._write_register_byte(STMPE_SYS_CTRL2, 0x0) # turn on clocks!
-        self._write_register_byte(STMPE_TSC_CTRL, STMPE_TSC_CTRL_XYZ | STMPE_TSC_CTRL_EN) # XYZ and enable!
+        self._write_register_byte(
+            STMPE_TSC_CTRL, STMPE_TSC_CTRL_XYZ | STMPE_TSC_CTRL_EN) # XYZ and enable!
         self._write_register_byte(STMPE_INT_EN, STMPE_INT_EN_TOUCHDET)
-        self._write_register_byte(STMPE_ADC_CTRL1, STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
+        self._write_register_byte(
+            STMPE_ADC_CTRL1, STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
         self._write_register_byte(STMPE_ADC_CTRL2, STMPE_ADC_CTRL2_6_5MHZ)
-        self._write_register_byte(STMPE_TSC_CFG, STMPE_TSC_CFG_4SAMPLE | STMPE_TSC_CFG_DELAY_1MS | STMPE_TSC_CFG_SETTLE_5MS)
+        self._write_register_byte(
+            STMPE_TSC_CFG, STMPE_TSC_CFG_4SAMPLE | STMPE_TSC_CFG_DELAY_1MS
+            | STMPE_TSC_CFG_SETTLE_5MS)
         self._write_register_byte(STMPE_TSC_FRACTION_Z, 0x6)
         self._write_register_byte(STMPE_FIFO_TH, 1)
         self._write_register_byte(STMPE_FIFO_STA, STMPE_FIFO_STA_RESET)
@@ -175,6 +179,17 @@ class Adafruit_STMPE610:
     def _read_byte(self, register):
         """Read a byte register value and return it"""
         return self._read_register(register, 1)[0]
+
+    def _read_register(self, register, length):
+        # Read an arbitrarily long register (specified by length number of
+        # bytes) and return a bytearray of the retrieved data.
+        # Subclasses MUST implement this!
+        raise NotImplementedError
+
+    def _write_register_byte(self, register, value):
+        # Write a single byte register at the specified register address.
+        # Subclasses MUST implement this!
+        raise NotImplementedError
 
 
     # pylint: disable=unused-variable
@@ -230,8 +245,14 @@ class Adafruit_STMPE610:
 
 
 class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
+    """
+    I2C driver for the STMPE610 Resistive Touch sensor.
+    """
     def __init__(self, i2c, address=_STMPE_ADDR):
-        """Check the STMPE610 was founnd, Default address is 0x41 but another address can be passed in as an argument"""
+        """
+        Check the STMPE610 was founnd
+        Default address is 0x41 but another address can be passed in as an argument
+        """
         import adafruit_bus_device.i2c_device as i2c_device
         self._i2c = i2c_device.I2CDevice(i2c, address)
         super().__init__()
@@ -252,8 +273,13 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             #print("$%02X <= 0x%02X" % (register, value))
 
 class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
+    """
+    SPI driver for the STMPE610 Resistive Touch sensor.
+    """
     def __init__(self, spi, cs, baudrate=100000):
-        """Check the STMPE610 was found,Default clock rate is 100000 but can be changed with 'baudrate'"""
+        """
+        Check the STMPE610 was found,Default clock rate is 100000 but can be changed with 'baudrate'
+        """
         import adafruit_bus_device.spi_device as spi_device
         self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate)
         super().__init__()
