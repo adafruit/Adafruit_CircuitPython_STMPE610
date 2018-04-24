@@ -9,8 +9,7 @@ import digitalio
 import adafruit_stmpe610
 from adafruit_rgb_display import ili9341, color565
 
-# Create library object using our Bus I2C & SPI port
-i2c = busio.I2C(board.SCL, board.SDA)
+# Create library object using our Bus SPI port
 spi = busio.SPI(clock=board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 
 # Adafruit Metro M0 + 2.8" Capacitive touch shield
