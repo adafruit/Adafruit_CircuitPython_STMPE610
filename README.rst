@@ -30,7 +30,7 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-see examples in githup repository: https://github.com/adafruit/Adafruit_CIrcuitPython_STMPE610/exmaples
+see examples in githup repository: https://github.com/adafruit/Adafruit_CircuitPython_STMPE610/exmaples
 Contributing
 ============
 

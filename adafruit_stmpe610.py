@@ -35,98 +35,98 @@ from micropython import const
 
 
 __version__ = "0.0.0-auto.0"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_stmpe610.git"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
 
 _STMPE_ADDR = const(0x41)
 _STMPE_VERSION = const(0x0811)
 
-STMPE_SYS_CTRL1 = const(0x03)
-STMPE_SYS_CTRL1_RESET = const(0x02)
-STMPE_SYS_CTRL2 = const(0x04)
+_STMPE_SYS_CTRL1 = const(0x03)
+_STMPE_SYS_CTRL1_RESET = const(0x02)
+_STMPE_SYS_CTRL2 = const(0x04)
 
-STMPE_TSC_CTRL = const(0x40)
-STMPE_TSC_CTRL_EN = const(0x01)
-STMPE_TSC_CTRL_XYZ = const(0x00)
-STMPE_TSC_CTRL_XY = const(0x02)
+_STMPE_TSC_CTRL = const(0x40)
+_STMPE_TSC_CTRL_EN = const(0x01)
+_STMPE_TSC_CTRL_XYZ = const(0x00)
+_STMPE_TSC_CTRL_XY = const(0x02)
 
-STMPE_INT_CTRL = const(0x09)
-STMPE_INT_CTRL_POL_HIGH = const(0x04)
-STMPE_INT_CTRL_POL_LOW = const(0x00)
-STMPE_INT_CTRL_EDGE = const(0x02)
-STMPE_INT_CTRL_LEVEL = const(0x00)
-STMPE_INT_CTRL_ENABLE = const(0x01)
-STMPE_INT_CTRL_DISABLE = const(0x00)
+_STMPE_INT_CTRL = const(0x09)
+_STMPE_INT_CTRL_POL_HIGH = const(0x04)
+_STMPE_INT_CTRL_POL_LOW = const(0x00)
+_STMPE_INT_CTRL_EDGE = const(0x02)
+_STMPE_INT_CTRL_LEVEL = const(0x00)
+_STMPE_INT_CTRL_ENABLE = const(0x01)
+_STMPE_INT_CTRL_DISABLE = const(0x00)
 
 
 
-STMPE_INT_EN = const(0x0A)
-STMPE_INT_EN_TOUCHDET = const(0x01)
-STMPE_INT_EN_FIFOTH = const(0x02)
-STMPE_INT_EN_FIFOOF = const(0x04)
-STMPE_INT_EN_FIFOFULL = const(0x08)
-STMPE_INT_EN_FIFOEMPTY = const(0x10)
-STMPE_INT_EN_ADC = const(0x40)
-STMPE_INT_EN_GPIO = const(0x80)
+_STMPE_INT_EN = const(0x0A)
+_STMPE_INT_EN_TOUCHDET = const(0x01)
+_STMPE_INT_EN_FIFOTH = const(0x02)
+_STMPE_INT_EN_FIFOOF = const(0x04)
+_STMPE_INT_EN_FIFOFULL = const(0x08)
+_STMPE_INT_EN_FIFOEMPTY = const(0x10)
+_STMPE_INT_EN_ADC = const(0x40)
+_STMPE_INT_EN_GPIO = const(0x80)
 
-STMPE_INT_STA = const(0x0B)
-STMPE_INT_STA_TOUCHDET = const(0x01)
+_STMPE_INT_STA = const(0x0B)
+_STMPE_INT_STA_TOUCHDET = const(0x01)
 
-STMPE_ADC_CTRL1 = const(0x20)
-STMPE_ADC_CTRL1_12BIT = const(0x08)
-STMPE_ADC_CTRL1_10BIT = const(0x00)
+_STMPE_ADC_CTRL1 = const(0x20)
+_STMPE_ADC_CTRL1_12BIT = const(0x08)
+_STMPE_ADC_CTRL1_10BIT = const(0x00)
 
-STMPE_ADC_CTRL2 = const(0x21)
-STMPE_ADC_CTRL2_1_625MHZ = const(0x00)
-STMPE_ADC_CTRL2_3_25MHZ = const(0x01)
-STMPE_ADC_CTRL2_6_5MHZ = const(0x02)
+_STMPE_ADC_CTRL2 = const(0x21)
+_STMPE_ADC_CTRL2_1_625MHZ = const(0x00)
+_STMPE_ADC_CTRL2_3_25MHZ = const(0x01)
+_STMPE_ADC_CTRL2_6_5MHZ = const(0x02)
 
-STMPE_TSC_CFG = const(0x41)
-STMPE_TSC_CFG_1SAMPLE = const(0x00)
-STMPE_TSC_CFG_2SAMPLE = const(0x40)
-STMPE_TSC_CFG_4SAMPLE = const(0x80)
-STMPE_TSC_CFG_8SAMPLE = const(0xC0)
-STMPE_TSC_CFG_DELAY_10US = const(0x00)
-STMPE_TSC_CFG_DELAY_50US = const(0x08)
-STMPE_TSC_CFG_DELAY_100US = const(0x10)
-STMPE_TSC_CFG_DELAY_500US = const(0x18)
-STMPE_TSC_CFG_DELAY_1MS = const(0x20)
-STMPE_TSC_CFG_DELAY_5MS = const(0x28)
-STMPE_TSC_CFG_DELAY_10MS = const(0x30)
-STMPE_TSC_CFG_DELAY_50MS = const(0x38)
-STMPE_TSC_CFG_SETTLE_10US = const(0x00)
-STMPE_TSC_CFG_SETTLE_100US = const(0x01)
-STMPE_TSC_CFG_SETTLE_500US = const(0x02)
-STMPE_TSC_CFG_SETTLE_1MS = const(0x03)
-STMPE_TSC_CFG_SETTLE_5MS = const(0x04)
-STMPE_TSC_CFG_SETTLE_10MS = const(0x05)
-STMPE_TSC_CFG_SETTLE_50MS = const(0x06)
-STMPE_TSC_CFG_SETTLE_100MS = const(0x07)
+_STMPE_TSC_CFG = const(0x41)
+_STMPE_TSC_CFG_1SAMPLE = const(0x00)
+_STMPE_TSC_CFG_2SAMPLE = const(0x40)
+_STMPE_TSC_CFG_4SAMPLE = const(0x80)
+_STMPE_TSC_CFG_8SAMPLE = const(0xC0)
+_STMPE_TSC_CFG_DELAY_10US = const(0x00)
+_STMPE_TSC_CFG_DELAY_50US = const(0x08)
+_STMPE_TSC_CFG_DELAY_100US = const(0x10)
+_STMPE_TSC_CFG_DELAY_500US = const(0x18)
+_STMPE_TSC_CFG_DELAY_1MS = const(0x20)
+_STMPE_TSC_CFG_DELAY_5MS = const(0x28)
+_STMPE_TSC_CFG_DELAY_10MS = const(0x30)
+_STMPE_TSC_CFG_DELAY_50MS = const(0x38)
+_STMPE_TSC_CFG_SETTLE_10US = const(0x00)
+_STMPE_TSC_CFG_SETTLE_100US = const(0x01)
+_STMPE_TSC_CFG_SETTLE_500US = const(0x02)
+_STMPE_TSC_CFG_SETTLE_1MS = const(0x03)
+_STMPE_TSC_CFG_SETTLE_5MS = const(0x04)
+_STMPE_TSC_CFG_SETTLE_10MS = const(0x05)
+_STMPE_TSC_CFG_SETTLE_50MS = const(0x06)
+_STMPE_TSC_CFG_SETTLE_100MS = const(0x07)
 
-STMPE_FIFO_TH = const(0x4A)
+_STMPE_FIFO_TH = const(0x4A)
 
-STMPE_FIFO_SIZE = const(0x4C)
+_STMPE_FIFO_SIZE = const(0x4C)
 
-STMPE_FIFO_STA = const(0x4B)
-STMPE_FIFO_STA_RESET = const(0x01)
-STMPE_FIFO_STA_OFLOW = const(0x80)
-STMPE_FIFO_STA_FULL = const(0x40)
-STMPE_FIFO_STA_EMPTY = const(0x20)
-STMPE_FIFO_STA_THTRIG = const(0x10)
+_STMPE_FIFO_STA = const(0x4B)
+_STMPE_FIFO_STA_RESET = const(0x01)
+_STMPE_FIFO_STA_OFLOW = const(0x80)
+_STMPE_FIFO_STA_FULL = const(0x40)
+_STMPE_FIFO_STA_EMPTY = const(0x20)
+_STMPE_FIFO_STA_THTRIG = const(0x10)
 
-STMPE_TSC_I_DRIVE = const(0x58)
-STMPE_TSC_I_DRIVE_20MA = const(0x00)
-STMPE_TSC_I_DRIVE_50MA = const(0x01)
+_STMPE_TSC_I_DRIVE = const(0x58)
+_STMPE_TSC_I_DRIVE_20MA = const(0x00)
+_STMPE_TSC_I_DRIVE_50MA = const(0x01)
 
-STMPE_TSC_DATA_X = const(0x4D)
-STMPE_TSC_DATA_Y = const(0x4F)
-STMPE_TSC_FRACTION_Z = const(0x56)
+_STMPE_TSC_DATA_X = const(0x4D)
+_STMPE_TSC_DATA_Y = const(0x4F)
+_STMPE_TSC_FRACTION_Z = const(0x56)
 
-STMPE_GPIO_SET_PIN = const(0x10)
-STMPE_GPIO_CLR_PIN = const(0x11)
-STMPE_GPIO_DIR = const(0x13)
-STMPE_GPIO_ALT_FUNCT = const(0x17)
+_STMPE_GPIO_SET_PIN = const(0x10)
+_STMPE_GPIO_CLR_PIN = const(0x11)
+_STMPE_GPIO_DIR = const(0x13)
+_STMPE_GPIO_ALT_FUNCT = const(0x17)
 
 
 
@@ -140,27 +140,28 @@ class Adafruit_STMPE610:
         version = self.get_version
         if _STMPE_VERSION != version:
             raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
-        self._write_register_byte(STMPE_SYS_CTRL1, STMPE_SYS_CTRL1_RESET)
+        self._write_register_byte(_STMPE_SYS_CTRL1, _STMPE_SYS_CTRL1_RESET)
         time.sleep(.001)
 
 
-        self._write_register_byte(STMPE_SYS_CTRL2, 0x0) # turn on clocks!
+        self._write_register_byte(_STMPE_SYS_CTRL2, 0x0) # turn on clocks!
         self._write_register_byte(
-            STMPE_TSC_CTRL, STMPE_TSC_CTRL_XYZ | STMPE_TSC_CTRL_EN) # XYZ and enable!
-        self._write_register_byte(STMPE_INT_EN, STMPE_INT_EN_TOUCHDET)
+            _STMPE_TSC_CTRL, _STMPE_TSC_CTRL_XYZ | _STMPE_TSC_CTRL_EN) # XYZ and enable!
+        self._write_register_byte(_STMPE_INT_EN, _STMPE_INT_EN_TOUCHDET)
         self._write_register_byte(
-            STMPE_ADC_CTRL1, STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
-        self._write_register_byte(STMPE_ADC_CTRL2, STMPE_ADC_CTRL2_6_5MHZ)
+            _STMPE_ADC_CTRL1, _STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
+        self._write_register_byte(_STMPE_ADC_CTRL2, _STMPE_ADC_CTRL2_6_5MHZ)
         self._write_register_byte(
-            STMPE_TSC_CFG, STMPE_TSC_CFG_4SAMPLE | STMPE_TSC_CFG_DELAY_1MS
-            | STMPE_TSC_CFG_SETTLE_5MS)
-        self._write_register_byte(STMPE_TSC_FRACTION_Z, 0x6)
-        self._write_register_byte(STMPE_FIFO_TH, 1)
-        self._write_register_byte(STMPE_FIFO_STA, STMPE_FIFO_STA_RESET)
-        self._write_register_byte(STMPE_FIFO_STA, 0)    # unreset
-        self._write_register_byte(STMPE_TSC_I_DRIVE, STMPE_TSC_I_DRIVE_50MA)
-        self._write_register_byte(STMPE_INT_STA, 0xFF) # reset all ints
-        self._write_register_byte(STMPE_INT_CTRL, STMPE_INT_CTRL_POL_HIGH | STMPE_INT_CTRL_ENABLE)
+            _STMPE_TSC_CFG, _STMPE_TSC_CFG_4SAMPLE | _STMPE_TSC_CFG_DELAY_1MS
+            | _STMPE_TSC_CFG_SETTLE_5MS)
+        self._write_register_byte(_STMPE_TSC_FRACTION_Z, 0x6)
+        self._write_register_byte(_STMPE_FIFO_TH, 1)
+        self._write_register_byte(_STMPE_FIFO_STA, _STMPE_FIFO_STA_RESET)
+        self._write_register_byte(_STMPE_FIFO_STA, 0)    # unreset
+        self._write_register_byte(_STMPE_TSC_I_DRIVE, _STMPE_TSC_I_DRIVE_50MA)
+        self._write_register_byte(_STMPE_INT_STA, 0xFF) # reset all ints
+        self._write_register_byte(
+            _STMPE_INT_CTRL, _STMPE_INT_CTRL_POL_HIGH | _STMPE_INT_CTRL_ENABLE)
 
     def read_data(self):
         """Request next stored reading - return tuple containing  (x,y,pressure) """
@@ -173,7 +174,7 @@ class Adafruit_STMPE610:
         pressure = d_4
         # reset all ints  (not sure what this does)
         if self.buffer_empty:
-            self._write_register_byte(STMPE_INT_STA, 0xFF)
+            self._write_register_byte(_STMPE_INT_STA, 0xFF)
         return (x_loc, y_loc, pressure)
 
     def _read_byte(self, register):
@@ -192,7 +193,6 @@ class Adafruit_STMPE610:
         raise NotImplementedError
 
 
-    # pylint: disable=unused-variable
     @property
     def touches(self):
         """
@@ -205,7 +205,6 @@ class Adafruit_STMPE610:
             point = {'x':x_loc, 'y':y_loc, 'pressure':pressure}
             touchpoints.append(point)
         return touchpoints
-    # pylint: enable=unused-variable
 
 
     @property
@@ -220,19 +219,19 @@ class Adafruit_STMPE610:
     @property
     def touched(self):
         "Report if any touches have been detectd"
-        touch = self._read_byte(STMPE_TSC_CTRL)&0x80
+        touch = self._read_byte(_STMPE_TSC_CTRL)&0x80
         return touch == 0x80
 
 
     @property
     def buffer_size(self):
         "The amount of touch data in the buffer"
-        return self._read_byte(STMPE_FIFO_SIZE)
+        return self._read_byte(_STMPE_FIFO_SIZE)
 
     @property
     def buffer_empty(self):
         "Buffer empty status"
-        empty = self._read_byte(STMPE_FIFO_STA) & STMPE_FIFO_STA_EMPTY
+        empty = self._read_byte(_STMPE_FIFO_STA) & _STMPE_FIFO_STA_EMPTY
         return empty != 0
 
 
