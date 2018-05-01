@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.org/adafruit/adafruit_CircuitPython_stmpe610.svg?branch=master
-    :target: https://travis-ci.org/adafruit/adafruit_CircuitPython_stmpe610
+.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_STMPE610.svg?branch=master
+    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_STMPE610
     :alt: Build Status
 
 Adafruit CircuitPython module for the STMPE610 Resistive Touch Screen Controller
