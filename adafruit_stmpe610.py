@@ -280,7 +280,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
     """
     def __init__(self, spi, cs, baudrate=1000000):
         """
-        Check the STMPE610 was found,Default clock rate is 1000000 but can be changed with 'baudrate'
+        Check the STMPE610 was found,Default clock rate 1000000 - can be changed with 'baudrate'
         """
         import adafruit_bus_device.spi_device as spi_device
         self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate)
