@@ -135,11 +135,7 @@ class Adafruit_STMPE610:
     A driver for the STMPE610 Resistive Touch sensor.
     """
     def __init__(self):
-        """Check the STMPE610 was found"""
-        # Check device version.
-        version = self.get_version
-        if _STMPE_VERSION != version:
-            raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
+        """Reset the controller"""
         self._write_register_byte(_STMPE_SYS_CTRL1, _STMPE_SYS_CTRL1_RESET)
         time.sleep(.001)
 
@@ -257,6 +253,10 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         """
         import adafruit_bus_device.i2c_device as i2c_device
         self._i2c = i2c_device.I2CDevice(i2c, address)
+        # Check device version.
+        version = self.get_version
+        if _STMPE_VERSION != version:
+            raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
         super().__init__()
 
     def _read_register(self, register, length):
@@ -278,12 +278,20 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
     """
     SPI driver for the STMPE610 Resistive Touch sensor.
     """
-    def __init__(self, spi, cs, baudrate=100000):
+    def __init__(self, spi, cs, baudrate=1000000):
         """
-        Check the STMPE610 was found,Default clock rate is 100000 but can be changed with 'baudrate'
+        Check the STMPE610 was found,Default clock rate 1000000 - can be changed with 'baudrate'
         """
         import adafruit_bus_device.spi_device as spi_device
         self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate)
+        # Check device version.
+        version = self.get_version
+        if _STMPE_VERSION != version:
+            # if it fails try SPI MODE 1  -- that is what Arduino does
+            self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate, polarity=0, phase=1)
+            version = self.get_version
+            if _STMPE_VERSION != version:
+                raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
         super().__init__()
 
     def _read_register(self, register, length):
