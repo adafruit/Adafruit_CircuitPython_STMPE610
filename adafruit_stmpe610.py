@@ -251,8 +251,8 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         Check the STMPE610 was founnd
         Default address is 0x41 but another address can be passed in as an argument
         """
-        import adafruit_bus_device.i2c_device as i2c_device
-        self._i2c = i2c_device.I2CDevice(i2c, address)
+        import adafruit_bus_device.i2c_device as i2cdev
+        self._i2c = i2cdev.I2CDevice(i2c, address)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
@@ -282,13 +282,13 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         """
         Check the STMPE610 was found,Default clock rate 1000000 - can be changed with 'baudrate'
         """
-        import adafruit_bus_device.spi_device as spi_device
-        self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate)
+        import adafruit_bus_device.spi_device as spidev
+        self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
             # if it fails try SPI MODE 1  -- that is what Arduino does
-            self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate, polarity=0, phase=1)
+            self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate, polarity=0, phase=1)
             version = self.get_version
             if _STMPE_VERSION != version:
                 raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
