@@ -22,7 +22,7 @@ display = ili9341.ILI9341(spi, cs=cs_pin, dc=dc_pin)
 display.fill(color565(0, 0, 0))
 
 st_cs_pin = digitalio.DigitalInOut(board.D6)
-st = adafruit_stmpe610.Adafruit_STMPE610_SPI(spi,st_cs_pin)
+st = adafruit_stmpe610.Adafruit_STMPE610_SPI(spi, st_cs_pin)
 
 while True:
     if st.touched:
