@@ -274,6 +274,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             i2c.write(bytes([register & 0xFF, value & 0xFF]))
             #print("$%02X <= 0x%02X" % (register, value))
 
+
 class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
     """
     SPI driver for the STMPE610 Resistive Touch sensor.
@@ -294,6 +295,8 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
                 raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
         super().__init__()
 
+    # pylint: disable=no-member
+    # Disable should be reconsidered when refactor can be tested.
     def _read_register(self, register, length):
         """Low level register reading over SPI, returns a list of values"""
         register = (register | 0x80) & 0xFF  # Read single, bit 7 high.
