@@ -38,7 +38,6 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
-
 _STMPE_ADDR = const(0x41)
 _STMPE_VERSION = const(0x0811)
 
@@ -58,7 +57,6 @@ _STMPE_INT_CTRL_EDGE = const(0x02)
 _STMPE_INT_CTRL_LEVEL = const(0x00)
 _STMPE_INT_CTRL_ENABLE = const(0x01)
 _STMPE_INT_CTRL_DISABLE = const(0x00)
-
 
 
 _STMPE_INT_EN = const(0x0A)
@@ -129,35 +127,40 @@ _STMPE_GPIO_DIR = const(0x13)
 _STMPE_GPIO_ALT_FUNCT = const(0x17)
 
 
-
 class Adafruit_STMPE610:
     """
     A driver for the STMPE610 Resistive Touch sensor.
     """
+
     def __init__(self):
         """Reset the controller"""
         self._write_register_byte(_STMPE_SYS_CTRL1, _STMPE_SYS_CTRL1_RESET)
-        time.sleep(.001)
+        time.sleep(0.001)
 
-
-        self._write_register_byte(_STMPE_SYS_CTRL2, 0x0) # turn on clocks!
+        self._write_register_byte(_STMPE_SYS_CTRL2, 0x0)  # turn on clocks!
         self._write_register_byte(
-            _STMPE_TSC_CTRL, _STMPE_TSC_CTRL_XYZ | _STMPE_TSC_CTRL_EN) # XYZ and enable!
+            _STMPE_TSC_CTRL, _STMPE_TSC_CTRL_XYZ | _STMPE_TSC_CTRL_EN
+        )  # XYZ and enable!
         self._write_register_byte(_STMPE_INT_EN, _STMPE_INT_EN_TOUCHDET)
         self._write_register_byte(
-            _STMPE_ADC_CTRL1, _STMPE_ADC_CTRL1_10BIT | (0x6 << 4)) # 96 clocks per conversion
+            _STMPE_ADC_CTRL1, _STMPE_ADC_CTRL1_10BIT | (0x6 << 4)
+        )  # 96 clocks per conversion
         self._write_register_byte(_STMPE_ADC_CTRL2, _STMPE_ADC_CTRL2_6_5MHZ)
         self._write_register_byte(
-            _STMPE_TSC_CFG, _STMPE_TSC_CFG_4SAMPLE | _STMPE_TSC_CFG_DELAY_1MS
-            | _STMPE_TSC_CFG_SETTLE_5MS)
+            _STMPE_TSC_CFG,
+            _STMPE_TSC_CFG_4SAMPLE
+            | _STMPE_TSC_CFG_DELAY_1MS
+            | _STMPE_TSC_CFG_SETTLE_5MS,
+        )
         self._write_register_byte(_STMPE_TSC_FRACTION_Z, 0x6)
         self._write_register_byte(_STMPE_FIFO_TH, 1)
         self._write_register_byte(_STMPE_FIFO_STA, _STMPE_FIFO_STA_RESET)
-        self._write_register_byte(_STMPE_FIFO_STA, 0)    # unreset
+        self._write_register_byte(_STMPE_FIFO_STA, 0)  # unreset
         self._write_register_byte(_STMPE_TSC_I_DRIVE, _STMPE_TSC_I_DRIVE_50MA)
-        self._write_register_byte(_STMPE_INT_STA, 0xFF) # reset all ints
+        self._write_register_byte(_STMPE_INT_STA, 0xFF)  # reset all ints
         self._write_register_byte(
-            _STMPE_INT_CTRL, _STMPE_INT_CTRL_POL_HIGH | _STMPE_INT_CTRL_ENABLE)
+            _STMPE_INT_CTRL, _STMPE_INT_CTRL_POL_HIGH | _STMPE_INT_CTRL_ENABLE
+        )
 
     def read_data(self):
         """Request next stored reading - return tuple containing  (x,y,pressure) """
@@ -188,7 +191,6 @@ class Adafruit_STMPE610:
         # Subclasses MUST implement this!
         raise NotImplementedError
 
-
     @property
     def touches(self):
         """
@@ -198,26 +200,24 @@ class Adafruit_STMPE610:
         touchpoints = []
         while (len(touchpoints) < 4) and not self.buffer_empty:
             (x_loc, y_loc, pressure) = self.read_data()
-            point = {'x':x_loc, 'y':y_loc, 'pressure':pressure}
+            point = {"x": x_loc, "y": y_loc, "pressure": pressure}
             touchpoints.append(point)
         return touchpoints
-
 
     @property
     def get_version(self):
         "Read the version number from the sensosr"
         v_1 = self._read_byte(0)
         v_2 = self._read_byte(1)
-        version = v_1<<8 | v_2
-        #print("version ",hex(version))
+        version = v_1 << 8 | v_2
+        # print("version ",hex(version))
         return version
 
     @property
     def touched(self):
         "Report if any touches have been detectd"
-        touch = self._read_byte(_STMPE_TSC_CTRL)&0x80
+        touch = self._read_byte(_STMPE_TSC_CTRL) & 0x80
         return touch == 0x80
-
 
     @property
     def buffer_size(self):
@@ -230,33 +230,31 @@ class Adafruit_STMPE610:
         empty = self._read_byte(_STMPE_FIFO_STA) & _STMPE_FIFO_STA_EMPTY
         return empty != 0
 
-
-
     @property
     def get_point(self):
         "Read one touch from the buffer"
         (x_loc, y_loc, pressure) = self.read_data()
-        point = {'x':x_loc, 'y':y_loc, 'pressure':pressure}
-        return  point
-
-
+        point = {"x": x_loc, "y": y_loc, "pressure": pressure}
+        return point
 
 
 class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
     """
     I2C driver for the STMPE610 Resistive Touch sensor.
     """
+
     def __init__(self, i2c, address=_STMPE_ADDR):
         """
         Check the STMPE610 was founnd
         Default address is 0x41 but another address can be passed in as an argument
         """
-        import adafruit_bus_device.i2c_device as i2cdev
+        import adafruit_bus_device.i2c_device as i2cdev  # pylint: disable=import-outside-toplevel
+
         self._i2c = i2cdev.I2CDevice(i2c, address)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
-            raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
+            raise RuntimeError("Failed to find STMPE610! Chip Version 0x%x" % version)
         super().__init__()
 
     def _read_register(self, register, length):
@@ -265,34 +263,40 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             i2c.write(bytearray([register & 0xFF]))
             result = bytearray(length)
             i2c.readinto(result)
-            #print("$%02X => %s" % (register, [hex(i) for i in result]))
+            # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
 
     def _write_register_byte(self, register, value):
         """Low level register writing over I2C, writes one 8-bit value"""
         with self._i2c as i2c:
             i2c.write(bytes([register & 0xFF, value & 0xFF]))
-            #print("$%02X <= 0x%02X" % (register, value))
+            # print("$%02X <= 0x%02X" % (register, value))
 
 
 class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
     """
     SPI driver for the STMPE610 Resistive Touch sensor.
     """
+
     def __init__(self, spi, cs, baudrate=1000000):
         """
         Check the STMPE610 was found,Default clock rate 1000000 - can be changed with 'baudrate'
         """
-        import adafruit_bus_device.spi_device as spidev
+        import adafruit_bus_device.spi_device as spidev  # pylint: disable=import-outside-toplevel
+
         self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
             # if it fails try SPI MODE 1  -- that is what Arduino does
-            self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate, polarity=0, phase=1)
+            self._spi = spidev.SPIDevice(
+                spi, cs, baudrate=baudrate, polarity=0, phase=1
+            )
             version = self.get_version
             if _STMPE_VERSION != version:
-                raise RuntimeError('Failed to find STMPE610! Chip Version 0x%x' % version)
+                raise RuntimeError(
+                    "Failed to find STMPE610! Chip Version 0x%x" % version
+                )
         super().__init__()
 
     # pylint: disable=no-member
@@ -304,7 +308,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             spi.write(bytearray([register]))
             result = bytearray(length)
             spi.readinto(result)
-#            print("$%02X => %s" % (register, [hex(i) for i in result]))
+            #            print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
 
     def _write_register_byte(self, register, value):
