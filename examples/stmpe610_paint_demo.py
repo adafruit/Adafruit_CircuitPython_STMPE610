@@ -30,8 +30,8 @@ while True:
             ts = st.touches
             for point in ts:
                 # perform transformation to get into display coordinate system!
-                y = point['y']
-                x = 4096 - point['x']
+                y = point["y"]
+                x = 4096 - point["x"]
                 x = 2 * x // 30
                 y = 8 * y // 90
-                display.fill_rectangle(x-2, y-2, 4, 4, color565(255, 0, 0))
+                display.fill_rectangle(x - 2, y - 2, 4, 4, color565(255, 0, 0))
