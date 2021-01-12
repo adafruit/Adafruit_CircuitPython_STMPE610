@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 """
 Simple painting demo that draws on an Adafruit capacitive touch shield with
 ILI9341 display and STMPE610 resistive touch driver
@@ -6,8 +9,8 @@ ILI9341 display and STMPE610 resistive touch driver
 import busio
 import board
 import digitalio
-import adafruit_stmpe610
 from adafruit_rgb_display import ili9341, color565
+import adafruit_stmpe610
 
 # Create library object using our Bus SPI port
 spi = busio.SPI(clock=board.SCK, MOSI=board.MOSI, MISO=board.MISO)
