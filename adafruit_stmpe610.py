@@ -278,7 +278,9 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             version = self.get_version
             if _STMPE_VERSION != version:
                 raise RuntimeError(
-                    "Failed to find STMPE610! Chip Version 0x%x" % version
+                    "Failed to find STMPE610! Chip Version 0x%x. "
+                    "If you are using the breakout, verify you are in SPI mode."
+                    % version
                 )
         super().__init__()
 
