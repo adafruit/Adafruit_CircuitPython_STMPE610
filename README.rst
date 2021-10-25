@@ -57,6 +57,11 @@ Usage Example
 
 See examples in github repository: https://github.com/adafruit/Adafruit_CircuitPython_STMPE610/tree/master/examples
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/stmpe610/en/latest/>`_.
+
 Contributing
 ============
 
