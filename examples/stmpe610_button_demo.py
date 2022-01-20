@@ -36,7 +36,7 @@ _touch_flip = (False, False)
 
 """# Instantiate the 3.5" 480x320 TFT FeatherWing (#3651).
 from adafruit_hx8357 import HX8357
-display = HX8357(display_bus, width=480, height=320)
+display = HX8357(disp_bus, width=480, height=320)
 _touch_flip = (False, True)"""
 
 # Always set rotation before instantiating the touchscreen
