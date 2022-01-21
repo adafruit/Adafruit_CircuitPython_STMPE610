@@ -8,13 +8,15 @@ Author(s): ladyada, CedarGroveMakerStudios
 
 """
 
+import time
 import board
 import digitalio
 import displayio
 import terminalio
-import time
-import adafruit_stmpe610
+#from adafruit_hx8357 import HX8357
+from adafruit_ili9341 import ILI9341
 from adafruit_button import Button
+import adafruit_stmpe610
 
 # --| Button Config |-------------------------------------------------
 BUTTON_X = 50
@@ -35,13 +37,10 @@ disp_bus = displayio.FourWire(
 )
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
-from adafruit_ili9341 import ILI9341
-
 display = ILI9341(disp_bus, width=320, height=240)
 _touch_flip = (False, False)
 
 """# Instantiate the 3.5" 480x320 TFT FeatherWing (#3651).
-from adafruit_hx8357 import HX8357
 display = HX8357(disp_bus, width=480, height=320)
 _touch_flip = (False, True)"""
 

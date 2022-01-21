@@ -28,15 +28,17 @@ display the touch value in screen coordinates; requires a previously measured
 calibration tuple for screen coordinate conversion accuracy.
 """
 
-import board
 import time
+import board
 import digitalio
 import displayio
 import vectorio
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
-import adafruit_stmpe610
+#from adafruit_hx8357 import HX8357
+from adafruit_ili9341 import ILI9341
 from simpleio import map_range
+import adafruit_stmpe610
 
 # Operational parameters:
 DISPLAY_ROTATION = 0  # Specify 0, 90, 180, or 270 degrees
@@ -51,7 +53,7 @@ class Colors:
     BLUE_DK = 0x000060  # Screen fill
     RED = 0xFF0000  # Boundary
     WHITE = 0xFFFFFF  # Text
-
+    
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
@@ -62,19 +64,16 @@ disp_bus = displayio.FourWire(
 )
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
-from adafruit_ili9341 import ILI9341
-
 display = ILI9341(disp_bus, width=320, height=240)
 _touch_flip = (False, False)
 
 """# Instantiate the 3.5" 480x320 TFT FeatherWing (#3651).
-from adafruit_hx8357 import HX8357
 display = HX8357(disp_bus, width=480, height=320)
 _touch_flip = (False, True)"""
 
 # Check rotation value and update display.
 # Always set rotation before instantiating the touchscreen.
-if DISPLAY_ROTATION != None and DISPLAY_ROTATION in (0, 90, 180, 270):
+if DISPLAY_ROTATION is not None and DISPLAY_ROTATION in (0, 90, 180, 270):
     display.rotation = DISPLAY_ROTATION
 else:
     print("Warning: invalid rotation value -- defalting to zero")
