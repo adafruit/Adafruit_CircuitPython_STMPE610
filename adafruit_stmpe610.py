@@ -253,10 +253,6 @@ class Adafruit_STMPE610:
         point = {"x": x_loc, "y": y_loc, "pressure": pressure}
         return point
 
-    @property
-    def test_text(self):
-        return self._test
-
 
 class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
     """I2C interface class for the STMPE610 Resistive Touch sensor.
