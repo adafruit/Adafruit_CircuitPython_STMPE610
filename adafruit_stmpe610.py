@@ -339,6 +339,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             touch_flip=(False, False))
 
     """
+
     def __init__(
         self,
         i2c,

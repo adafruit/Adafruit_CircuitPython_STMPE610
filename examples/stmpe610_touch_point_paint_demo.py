@@ -20,14 +20,19 @@ cs_pin = digitalio.DigitalInOut(board.D9)
 dc_pin = digitalio.DigitalInOut(board.D10)
 display = ili9341.ILI9341(board.SPI(), cs=cs_pin, dc=dc_pin)
 
-print(display.width, display.height)
-
 # Fill the screen with black!
 display.fill(color565(0, 0, 0))
 
 # Instantiate the touchpad
 ts_cs_pin = digitalio.DigitalInOut(board.D6)
-ts = adafruit_stmpe610.Adafruit_STMPE610_SPI(board.SPI(), ts_cs_pin, calibration=((350, 3500), (350, 3500)), size=(display.width, display.height), disp_rotation = 90, touch_flip=(True, True))
+ts = adafruit_stmpe610.Adafruit_STMPE610_SPI(
+    board.SPI(),
+    ts_cs_pin,
+    calibration=((350, 3500), (350, 3500)),
+    size=(display.width, display.height),
+    disp_rotation=90,
+    touch_flip=(True, True),
+)
 
 while True:
     point = ts.touch_point

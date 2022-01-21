@@ -52,14 +52,18 @@ class Colors:
     RED = 0xFF0000  # Boundary
     WHITE = 0xFFFFFF  # Text
 
+
 # Release any resources currently in use for the displays
 displayio.release_displays()
 
 # Define the display's SPI bus connection
-disp_bus = displayio.FourWire(board.SPI(), command=board.D10, chip_select=board.D9, reset=None)
+disp_bus = displayio.FourWire(
+    board.SPI(), command=board.D10, chip_select=board.D9, reset=None
+)
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
 from adafruit_ili9341 import ILI9341
+
 display = ILI9341(disp_bus, width=320, height=240)
 _touch_flip = (False, False)
 
@@ -92,8 +96,14 @@ if RAW_DATA:
 else:
     # Display calibrated screen coordinates.
     # Update the raw calibration tuple with previously measured values.
-    ts = adafruit_stmpe610.Adafruit_STMPE610_SPI(board.SPI(), ts_cs, calibration=CALIBRATION,
-        size=(display.width, display.height), disp_rotation=display.rotation, touch_flip=_touch_flip)
+    ts = adafruit_stmpe610.Adafruit_STMPE610_SPI(
+        board.SPI(),
+        ts_cs,
+        calibration=CALIBRATION,
+        size=(display.width, display.height),
+        disp_rotation=display.rotation,
+        touch_flip=_touch_flip,
+    )
 
 # Define the graphic objects if REPL_ONLY = False.
 if not REPL_ONLY:
