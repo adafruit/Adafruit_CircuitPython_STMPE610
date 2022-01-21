@@ -319,7 +319,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         super().__init__()
 
     @property
-    def touch_point(self): # pylint: disable=too-many-branches
+    def touch_point(self):  # pylint: disable=too-many-branches
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -363,7 +363,6 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             return (x, y, pressure)
         return None
 
-
     def _read_register(self, register, length):
         """Low level register reading over I2C, returns a list of values."""
         with self._i2c as i2c:
@@ -372,7 +371,6 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             i2c.readinto(result)
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
-
 
     def _write_register_byte(self, register, value):
         """Low level register writing over I2C, writes one 8-bit value."""
@@ -460,7 +458,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         super().__init__()
 
     @property
-    def touch_point(self): # pylint: disable=too-many-branches
+    def touch_point(self):  # pylint: disable=too-many-branches
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -504,7 +502,6 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             return (x, y, pressure)
         return None
 
-
     # pylint: disable=no-member
     # Disable should be reconsidered when refactor can be tested.
     def _read_register(self, register, length):
@@ -516,7 +513,6 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             spi.readinto(result)
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
-
 
     def _write_register_byte(self, register, value):
         """Low level register writing over SPI, writes one 8-bit value."""

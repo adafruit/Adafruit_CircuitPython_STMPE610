@@ -13,7 +13,8 @@ import board
 import digitalio
 import displayio
 import terminalio
-#from adafruit_hx8357 import HX8357
+
+# from adafruit_hx8357 import HX8357
 from adafruit_ili9341 import ILI9341
 from adafruit_button import Button
 import adafruit_stmpe610

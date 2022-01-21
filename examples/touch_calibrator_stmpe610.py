@@ -35,13 +35,14 @@ import displayio
 import vectorio
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text.label import Label
-#from adafruit_hx8357 import HX8357
+
+# from adafruit_hx8357 import HX8357
 from adafruit_ili9341 import ILI9341
 from simpleio import map_range
 import adafruit_stmpe610
 
 # Operational parameters:
-DISPLAY_ROTATION = 270  # Specify 0, 90, 180, or 270 degrees
+DISPLAY_ROTATION = 0  # Specify 0, 90, 180, or 270 degrees
 REPL_ONLY = False  # True to disable graphics
 RAW_DATA = True  # Use touchscreen raw values; False to use display coordinates
 
