@@ -49,11 +49,10 @@ RAW_DATA = True  # Use touchscreen raw values; False to use display coordinates
 CALIBRATION = ((357, 3812), (390, 3555))
 
 # A collection of colors used for graphic objects
-class Colors:
-    BLUE_DK = 0x000060  # Screen fill
-    RED = 0xFF0000  # Boundary
-    WHITE = 0xFFFFFF  # Text
-    
+BLUE_DK = 0x000060  # Screen fill
+RED = 0xFF0000  # Boundary
+WHITE = 0xFFFFFF  # Text
+
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
@@ -112,7 +111,7 @@ if not REPL_ONLY:
     coordinates = Label(
         font=font_0,
         text="calib: ((x_min, x_max), (y_min, y_max))",
-        color=Colors.WHITE,
+        color=WHITE,
     )
     coordinates.anchor_point = (0.5, 0.5)
     coordinates.anchored_position = (display.width // 2, display.height // 4)
@@ -120,14 +119,14 @@ if not REPL_ONLY:
     display_rotation = Label(
         font=font_0,
         text="rotation: " + str(display.rotation),
-        color=Colors.WHITE,
+        color=WHITE,
     )
     display_rotation.anchor_point = (0.5, 0.5)
     display_rotation.anchored_position = (display.width // 2, display.height // 4 - 30)
 
     # Define graphic objects for the screen fill, boundary, and touch pen.
     target_palette = displayio.Palette(1)
-    target_palette[0] = Colors.BLUE_DK
+    target_palette[0] = BLUE_DK
     screen_fill = vectorio.Rectangle(
         pixel_shader=target_palette,
         x=2,
@@ -137,7 +136,7 @@ if not REPL_ONLY:
     )
 
     target_palette = displayio.Palette(1)
-    target_palette[0] = Colors.RED
+    target_palette[0] = RED
     boundary = vectorio.Rectangle(
         pixel_shader=target_palette,
         x=0,

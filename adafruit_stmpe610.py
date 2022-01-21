@@ -345,16 +345,16 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         self._disp_rotation = disp_rotation
         self._touch_flip = touch_flip
 
-        """Check the touchscreen calibration and display size kwargs."""
+        # Check the touchscreen calibration and display size kwargs.
         if not self._calib:
             self._calib = ((0, 4095), (0, 4095))
         if not self._disp_size:
             self._disp_size = (4095, 4095)
 
-        if not self._disp_rotation in (0, 90, 180, 270):
+        if self._disp_rotation not in (0, 90, 180, 270):
             raise ValueError("Display rotation value must be 0, 90, 180, or 270")
 
-        """Check that the STMPE610 was found."""
+        # Check that the STMPE610 was found.
         import adafruit_bus_device.i2c_device as i2cdev  # pylint: disable=import-outside-toplevel
 
         self._i2c = i2cdev.I2CDevice(i2c, address)
@@ -429,7 +429,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         self._disp_rotation = disp_rotation
         self._touch_flip = touch_flip
 
-        """Check the touchscreen calibration and display size kwargs."""
+        # Check the touchscreen calibration and display size kwargs.
         if not self._calib:
             self._calib = ((0, 4095), (0, 4095))
         if not self._disp_size:
@@ -438,7 +438,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         if not self._disp_rotation in (0, 90, 180, 270):
             raise ValueError("Display rotation value must be 0, 90, 180, or 270")
 
-        """Check that the STMPE610 was found."""
+        # Check that the STMPE610 was found.
         import adafruit_bus_device.spi_device as spidev  # pylint: disable=import-outside-toplevel
 
         self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate)
