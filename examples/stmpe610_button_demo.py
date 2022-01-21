@@ -1,8 +1,11 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-FileCopyrightText: 2022 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 """
 Simple button demonstration/example.
 STMPE610 touch controller with TFT FeatherWing Display
+
+Author(s): ladyada, CedarGroveMakerStudios
+
 """
 
 import board

@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: 2022 Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: 2022 CedarGroveMakerStudios for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
 """
 touch_calibrator_stmpe610.py  2022-01-20 v1.0
 
-Author(s): JG for Cedar Grove Maker Studios
+Author(s): CedarGroveMakerStudios
 
 On-screen touchscreen calibrator for TFT FeatherWing displays.
 

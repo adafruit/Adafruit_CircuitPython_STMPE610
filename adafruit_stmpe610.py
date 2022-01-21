@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2017 Jerry Needell for Adafruit Industries
+# SPDX-FileCopyrightText: 2017, 2022 Jerry Needell for Adafruit Industries
 #
 # SPDX-License-Identifier: MIT
 """
@@ -6,7 +6,7 @@
 ====================================================
 This is a CircuitPython Driver for the STMPE610 Resistive Touch sensor
 
-* Author(s): Jerry Needell
+* Author(s): Jerry Needell, CedarGroveMakerStudios
 
 Implementation Notes
 --------------------
