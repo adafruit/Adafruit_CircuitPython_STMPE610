@@ -254,49 +254,8 @@ class Adafruit_STMPE610:
         return point
 
     @property
-    def touch_point(self): # pylint: disable=too-many-branches
-        """Read latest touched point value and convert to calibration-adjusted
-        and rotated display coordinates. Commpatible with Displayio Button.
-        :return: x, y, pressure
-        rtype: int, int, int
-        """
-        if not self.buffer_empty:
-            while not self.buffer_empty:
-                x_loc, y_loc, pressure = self.read_data()
-            # Swap touch axis range minimum and maximum if needed
-            if self._disp_rotation in (0, 180):
-                if self._touch_flip and self._touch_flip[0]:
-                    x_c = (self._calib[0][1], self._calib[0][0])
-                else:
-                    x_c = (self._calib[0][0], self._calib[0][1])
-                if self._touch_flip and self._touch_flip[1]:
-                    y_c = (self._calib[1][1], self._calib[1][0])
-                else:
-                    y_c = (self._calib[1][0], self._calib[1][1])
-            if self._disp_rotation in (90, 270):
-                if self._touch_flip[1]:
-                    x_c = (self._calib[1][1], self._calib[1][0])
-                else:
-                    x_c = (self._calib[1][0], self._calib[1][1])
-                if self._touch_flip[0]:
-                    y_c = (self._calib[0][1], self._calib[0][0])
-                else:
-                    y_c = (self._calib[0][0], self._calib[0][1])
-            # Adjust to calibration range; convert to display size and rotation
-            if self._disp_rotation == 0:
-                x = int(map_range(y_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
-                y = int(map_range(x_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
-            elif self._disp_rotation == 90:
-                x = int(map_range(x_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
-                y = int(map_range(y_loc, y_c[0], y_c[1], self._disp_size[1], 0))
-            elif self._disp_rotation == 180:
-                x = int(map_range(y_loc, x_c[0], x_c[1], self._disp_size[0], 0))
-                y = int(map_range(x_loc, y_c[0], y_c[1], self._disp_size[1], 0))
-            elif self._disp_rotation == 270:
-                x = int(map_range(x_loc, x_c[0], x_c[1], self._disp_size[0], 0))
-                y = int(map_range(y_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
-            return (x, y, pressure)
-        return None
+    def test_text(self):
+        return self._test
 
 
 class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
@@ -363,6 +322,52 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             raise RuntimeError("Failed to find STMPE610! Chip Version 0x%x" % version)
         super().__init__()
 
+    @property
+    def touch_point(self): # pylint: disable=too-many-branches
+        """Read latest touched point value and convert to calibration-adjusted
+        and rotated display coordinates. Commpatible with Displayio Button.
+        :return: x, y, pressure
+        rtype: int, int, int
+        """
+        if not self.buffer_empty:
+            while not self.buffer_empty:
+                x_loc, y_loc, pressure = self.read_data()
+            # Swap touch axis range minimum and maximum if needed
+            if self._disp_rotation in (0, 180):
+                if self._touch_flip and self._touch_flip[0]:
+                    x_c = (self._calib[0][1], self._calib[0][0])
+                else:
+                    x_c = (self._calib[0][0], self._calib[0][1])
+                if self._touch_flip and self._touch_flip[1]:
+                    y_c = (self._calib[1][1], self._calib[1][0])
+                else:
+                    y_c = (self._calib[1][0], self._calib[1][1])
+            if self._disp_rotation in (90, 270):
+                if self._touch_flip[1]:
+                    x_c = (self._calib[1][1], self._calib[1][0])
+                else:
+                    x_c = (self._calib[1][0], self._calib[1][1])
+                if self._touch_flip[0]:
+                    y_c = (self._calib[0][1], self._calib[0][0])
+                else:
+                    y_c = (self._calib[0][0], self._calib[0][1])
+            # Adjust to calibration range; convert to display size and rotation
+            if self._disp_rotation == 0:
+                x = int(map_range(y_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
+                y = int(map_range(x_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
+            elif self._disp_rotation == 90:
+                x = int(map_range(x_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
+                y = int(map_range(y_loc, y_c[0], y_c[1], self._disp_size[1], 0))
+            elif self._disp_rotation == 180:
+                x = int(map_range(y_loc, x_c[0], x_c[1], self._disp_size[0], 0))
+                y = int(map_range(x_loc, y_c[0], y_c[1], self._disp_size[1], 0))
+            elif self._disp_rotation == 270:
+                x = int(map_range(x_loc, x_c[0], x_c[1], self._disp_size[0], 0))
+                y = int(map_range(y_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
+            return (x, y, pressure)
+        return None
+
+
     def _read_register(self, register, length):
         """Low level register reading over I2C, returns a list of values."""
         with self._i2c as i2c:
@@ -371,6 +376,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             i2c.readinto(result)
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
+
 
     def _write_register_byte(self, register, value):
         """Low level register writing over I2C, writes one 8-bit value."""
@@ -457,6 +463,52 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
                 )
         super().__init__()
 
+    @property
+    def touch_point(self): # pylint: disable=too-many-branches
+        """Read latest touched point value and convert to calibration-adjusted
+        and rotated display coordinates. Commpatible with Displayio Button.
+        :return: x, y, pressure
+        rtype: int, int, int
+        """
+        if not self.buffer_empty:
+            while not self.buffer_empty:
+                x_loc, y_loc, pressure = self.read_data()
+            # Swap touch axis range minimum and maximum if needed
+            if self._disp_rotation in (0, 180):
+                if self._touch_flip and self._touch_flip[0]:
+                    x_c = (self._calib[0][1], self._calib[0][0])
+                else:
+                    x_c = (self._calib[0][0], self._calib[0][1])
+                if self._touch_flip and self._touch_flip[1]:
+                    y_c = (self._calib[1][1], self._calib[1][0])
+                else:
+                    y_c = (self._calib[1][0], self._calib[1][1])
+            if self._disp_rotation in (90, 270):
+                if self._touch_flip[1]:
+                    x_c = (self._calib[1][1], self._calib[1][0])
+                else:
+                    x_c = (self._calib[1][0], self._calib[1][1])
+                if self._touch_flip[0]:
+                    y_c = (self._calib[0][1], self._calib[0][0])
+                else:
+                    y_c = (self._calib[0][0], self._calib[0][1])
+            # Adjust to calibration range; convert to display size and rotation
+            if self._disp_rotation == 0:
+                x = int(map_range(y_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
+                y = int(map_range(x_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
+            elif self._disp_rotation == 90:
+                x = int(map_range(x_loc, x_c[0], x_c[1], 0, self._disp_size[0]))
+                y = int(map_range(y_loc, y_c[0], y_c[1], self._disp_size[1], 0))
+            elif self._disp_rotation == 180:
+                x = int(map_range(y_loc, x_c[0], x_c[1], self._disp_size[0], 0))
+                y = int(map_range(x_loc, y_c[0], y_c[1], self._disp_size[1], 0))
+            elif self._disp_rotation == 270:
+                x = int(map_range(x_loc, x_c[0], x_c[1], self._disp_size[0], 0))
+                y = int(map_range(y_loc, y_c[0], y_c[1], 0, self._disp_size[1]))
+            return (x, y, pressure)
+        return None
+
+
     # pylint: disable=no-member
     # Disable should be reconsidered when refactor can be tested.
     def _read_register(self, register, length):
@@ -468,6 +520,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             spi.readinto(result)
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
+
 
     def _write_register_byte(self, register, value):
         """Low level register writing over SPI, writes one 8-bit value."""

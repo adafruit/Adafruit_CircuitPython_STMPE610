@@ -41,7 +41,7 @@ from simpleio import map_range
 import adafruit_stmpe610
 
 # Operational parameters:
-DISPLAY_ROTATION = 0  # Specify 0, 90, 180, or 270 degrees
+DISPLAY_ROTATION = 270  # Specify 0, 90, 180, or 270 degrees
 REPL_ONLY = False  # True to disable graphics
 RAW_DATA = True  # Use touchscreen raw values; False to use display coordinates
 
@@ -52,7 +52,6 @@ CALIBRATION = ((357, 3812), (390, 3555))
 BLUE_DK = 0x000060  # Screen fill
 RED = 0xFF0000  # Boundary
 WHITE = 0xFFFFFF  # Text
-
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
