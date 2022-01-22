@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-touch_calibrator_stmpe610.py  2022-01-20 v1.1
+touch_calibrator_stmpe610.py  2022-01-21 v1.1
 
 Author(s): CedarGroveMakerStudios
 
@@ -14,6 +14,10 @@ square tracks the stylus tip (REPL_ONLY=False). Minimum and maximum
 calibration values will display on the screen and in the REPL. The calibration
 tuple can be copied and pasted into the calling code's touchscreen
 instantiation statement.
+
+NOTE: When instantiating the STMPE610 controller, enter the 0-degree display
+rotation raw touch calibration value regardless of screen rotation value.
+The controller code will automatically adjust the calibration as needed.
 
 DISPLAY_ROTATION: Display rotation value in degrees. Only values of
 None, 0, 90, 180, and 270 degrees are accepted. Defaults to None, the
@@ -42,11 +46,14 @@ from simpleio import map_range
 import adafruit_stmpe610
 
 # Operational parameters:
-DISPLAY_ROTATION = 0  # Specify 0, 90, 180, or 270 degrees
+#   Specify 0, 90, 180, or 270 degrees;
+#   use 0 for instantiation calibration tuple.
+DISPLAY_ROTATION = 0
 REPL_ONLY = False  # True to disable graphics
 RAW_DATA = True  # Use touchscreen raw values; False to use display coordinates
 
-# Previously measured raw calibration tuple for display coordinate mode (RAW_DATA = False):
+# Previously measured raw calibration tuple for
+#   display coordinate mode (RAW_DATA = False):
 CALIBRATION = ((357, 3812), (390, 3555))
 
 # A collection of colors used for graphic objects
