@@ -12,6 +12,13 @@ Implementation Notes
 --------------------
 **Hardware:**
 
+* 2.4" 320x240 TFT FeatherWing display
+  https://www.adafruit.com/product/3315
+* 3.5" 480x320 TFT FeatherWing display
+  https://www.adafruit.com/product/3651
+# Resistive Touch Screen Controller - STMPE610 breakout board
+  https://www.adafruit.com/product/1571  (discontinued)
+
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware for the supported boards:
@@ -22,7 +29,7 @@ import time
 from micropython import const
 
 
-__version__ = "1.2.7"
+__version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
