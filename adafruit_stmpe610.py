@@ -12,11 +12,9 @@ Implementation Notes
 --------------------
 **Hardware:**
 
-* 2.4" 320x240 TFT FeatherWing display
-  https://www.adafruit.com/product/3315
-* 3.5" 480x320 TFT FeatherWing display
-  https://www.adafruit.com/product/3651
-# Resistive Touch Screen Controller - STMPE610 breakout board
+* 2.4" 320x240 TFT FeatherWing display: https://www.adafruit.com/product/3315
+* 3.5" 480x320 TFT FeatherWing display: https://www.adafruit.com/product/3651
+# Resistive Touch Screen Controller - STMPE610 breakout board:
   https://www.adafruit.com/product/1571  (discontinued)
 
 **Software and Dependencies:**
