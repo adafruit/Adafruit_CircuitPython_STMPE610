@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-stmpe610/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/stmpe610/en/latest/
+    :target: https://docs.circuitpython.org/projects/stmpe610/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
@@ -60,7 +60,7 @@ See examples in github repository: https://github.com/adafruit/Adafruit_CircuitP
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/stmpe610/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/stmpe610/en/latest/>`_.
 
 Contributing
 ============
