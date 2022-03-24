@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """
-touch_calibrator_stmpe610.py  2022-01-21 v1.1
+stmpe610_touch_calibrator.py  2022-01-21 v1.1
 
 Author(s): CedarGroveMakerStudios
 
