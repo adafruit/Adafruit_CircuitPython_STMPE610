@@ -26,12 +26,21 @@ Implementation Notes
 import time
 from micropython import const
 
+try:
+    from typing import List, Optional, Tuple, Union
+    from typing_extensions import Literal
+    from microcontroller import Pin
+    from busio import I2C, SPI
+except ImportError:
+    pass
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
-def map_range(x, in_min, in_max, out_min, out_max):
+def map_range(
+    x: Union[int, float], in_min: int, in_max: int, out_min: int, out_max: int
+) -> float:
     """
     Maps a value from one range to another. Values beyond the input minimum or
     maximum will be limited to the minimum or maximum of the output range.
@@ -155,7 +164,7 @@ class Adafruit_STMPE610:
 
     See the examples folder for instantiation kwargs and properties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Reset the controller."""
         self._write_register_byte(_STMPE_SYS_CTRL1, _STMPE_SYS_CTRL1_RESET)
         time.sleep(0.001)
@@ -185,7 +194,7 @@ class Adafruit_STMPE610:
             _STMPE_INT_CTRL, _STMPE_INT_CTRL_POL_HIGH | _STMPE_INT_CTRL_ENABLE
         )
 
-    def read_data(self):
+    def read_data(self) -> Tuple[int, int, int]:
         """Request next stored reading - return tuple containing (x,y,pressure)."""
         d_1 = self._read_byte(0xD7)
         d_2 = self._read_byte(0xD7)
@@ -199,23 +208,23 @@ class Adafruit_STMPE610:
             self._write_register_byte(_STMPE_INT_STA, 0xFF)
         return (x_loc, y_loc, pressure)
 
-    def _read_byte(self, register):
+    def _read_byte(self, register: int) -> int:
         """Read a byte register value and return it."""
         return self._read_register(register, 1)[0]
 
-    def _read_register(self, register, length):
+    def _read_register(self, register: int, length: int) -> bytearray:
         """Read an arbitrarily long register (specified by length number of
         bytes) and return a bytearray of the retrieved data.
         Subclasses MUST implement this!"""
         raise NotImplementedError
 
-    def _write_register_byte(self, register, value):
+    def _write_register_byte(self, register: int, value: int) -> None:
         """Write a single byte register at the specified register address.
         Subclasses MUST implement this!"""
         raise NotImplementedError
 
     @property
-    def touches(self):
+    def touches(self) -> List[Tuple[int, int, int]]:
         """Returns a list of touchpoint dicts, with 'x' and 'y' containing the
         touch coordinates, and 'pressure'."""
         touchpoints = []
@@ -226,7 +235,7 @@ class Adafruit_STMPE610:
         return touchpoints
 
     @property
-    def get_version(self):
+    def get_version(self) -> int:
         """Read the version number from the sensor."""
         v_1 = self._read_byte(0)
         v_2 = self._read_byte(1)
@@ -235,24 +244,24 @@ class Adafruit_STMPE610:
         return version
 
     @property
-    def touched(self):
+    def touched(self) -> bool:
         """Report if any touches were detected."""
         touch = self._read_byte(_STMPE_TSC_CTRL) & 0x80
         return touch == 0x80
 
     @property
-    def buffer_size(self):
+    def buffer_size(self) -> int:
         """The amount of touch data in the buffer."""
         return self._read_byte(_STMPE_FIFO_SIZE)
 
     @property
-    def buffer_empty(self):
+    def buffer_empty(self) -> bool:
         """Buffer empty status."""
         empty = self._read_byte(_STMPE_FIFO_STA) & _STMPE_FIFO_STA_EMPTY
         return empty != 0
 
     @property
-    def get_point(self):
+    def get_point(self) -> dict:
         """Read one touch from the buffer."""
         (x_loc, y_loc, pressure) = self.read_data()
         point = {"x": x_loc, "y": y_loc, "pressure": pressure}
@@ -291,13 +300,13 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        i2c,
-        address=_STMPE_ADDR,
-        calibration=None,
-        size=None,
-        disp_rotation=0,
-        touch_flip=(False, False),
-    ):
+        i2c: I2C,
+        address: int = _STMPE_ADDR,
+        calibration: Optional[Tuple[int, int]] = None,
+        size: Optional[Tuple[int, int]] = None,
+        disp_rotation: Literal[0, 90, 180, 270] = 0,
+        touch_flip: Tuple[bool, bool] = (False, False),
+    ) -> None:
 
         self._calib = calibration
         self._disp_size = size
@@ -320,11 +329,13 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
-            raise RuntimeError("Failed to find STMPE610! Chip Version 0x%x" % version)
+            raise RuntimeError(
+                f"Failed to find STMPE610! Chip Version {hex(version).upper()}."
+            )
         super().__init__()
 
     @property
-    def touch_point(self):  # pylint: disable=too-many-branches
+    def touch_point(self) -> Tuple[int, int, int]:  # pylint: disable=too-many-branches
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -368,7 +379,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             return (x, y, pressure)
         return None
 
-    def _read_register(self, register, length):
+    def _read_register(self, register: int, length: int) -> List[int]:
         """Low level register reading over I2C, returns a list of values."""
         with self._i2c as i2c:
             i2c.write(bytearray([register & 0xFF]))
@@ -377,7 +388,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
 
-    def _write_register_byte(self, register, value):
+    def _write_register_byte(self, register: int, value: int) -> None:
         """Low level register writing over I2C, writes one 8-bit value."""
         with self._i2c as i2c:
             i2c.write(bytes([register & 0xFF, value & 0xFF]))
@@ -419,14 +430,14 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        spi,
-        cs,
-        baudrate=1000000,
-        calibration=None,
-        size=None,
-        disp_rotation=0,
-        touch_flip=(False, False),
-    ):
+        spi: SPI,
+        cs: Pin,
+        baudrate: int = 1000000,
+        calibration: Optional[Tuple[int, int]] = None,
+        size: Optional[Tuple[int, int]] = None,
+        disp_rotation: Literal[0, 90, 180, 270] = 0,
+        touch_flip: Tuple[bool, bool] = (False, False),
+    ) -> None:
 
         self._calib = calibration
         self._disp_size = size
@@ -456,14 +467,14 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             version = self.get_version
             if _STMPE_VERSION != version:
                 raise RuntimeError(
-                    "Failed to find STMPE610 controller! Chip Version 0x%x. "
+                    f"Failed to find STMPE610 controller! Chip Version {hex(version).upper()}. "
                     "If you are using the breakout, verify you are in SPI mode."
                     % version
                 )
         super().__init__()
 
     @property
-    def touch_point(self):  # pylint: disable=too-many-branches
+    def touch_point(self) -> Tuple[int, int, int]:  # pylint: disable=too-many-branches
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -509,7 +520,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
 
     # pylint: disable=no-member
     # Disable should be reconsidered when refactor can be tested.
-    def _read_register(self, register, length):
+    def _read_register(self, register: int, length: int) -> List[int]:
         """Low level register reading over SPI, returns a list of values."""
         register = (register | 0x80) & 0xFF  # Read single byte, bit 7 high.
         with self._spi as spi:
@@ -519,7 +530,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             # print("$%02X => %s" % (register, [hex(i) for i in result]))
             return result
 
-    def _write_register_byte(self, register, value):
+    def _write_register_byte(self, register: int, value: int) -> None:
         """Low level register writing over SPI, writes one 8-bit value."""
         register &= 0x7F  # Write, bit 7 low.
         with self._spi as spi:
