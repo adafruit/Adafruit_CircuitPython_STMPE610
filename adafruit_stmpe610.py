@@ -27,7 +27,7 @@ import time
 from micropython import const
 
 try:
-    from typing import List, Optional, Tuple, Union
+    from typing import Dict, List, Optional, Tuple
     from typing_extensions import Literal
     from microcontroller import Pin
     from busio import I2C, SPI
@@ -38,9 +38,7 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
-def map_range(
-    x: Union[int, float], in_min: int, in_max: int, out_min: int, out_max: int
-) -> float:
+def map_range(x: float, in_min: int, in_max: int, out_min: int, out_max: int) -> float:
     """
     Maps a value from one range to another. Values beyond the input minimum or
     maximum will be limited to the minimum or maximum of the output range.
@@ -224,7 +222,7 @@ class Adafruit_STMPE610:
         raise NotImplementedError
 
     @property
-    def touches(self) -> List[Tuple[int, int, int]]:
+    def touches(self) -> List[Dict[str, int]]:
         """Returns a list of touchpoint dicts, with 'x' and 'y' containing the
         touch coordinates, and 'pressure'."""
         touchpoints = []
@@ -261,7 +259,7 @@ class Adafruit_STMPE610:
         return empty != 0
 
     @property
-    def get_point(self) -> dict:
+    def get_point(self) -> Dict[str, int]:
         """Read one touch from the buffer."""
         (x_loc, y_loc, pressure) = self.read_data()
         point = {"x": x_loc, "y": y_loc, "pressure": pressure}
@@ -302,8 +300,8 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         self,
         i2c: I2C,
         address: int = _STMPE_ADDR,
-        calibration: Optional[Tuple[int, int]] = None,
-        size: Optional[Tuple[int, int]] = None,
+        calibration: Optional[Tuple[Tuple[int, int], Tuple[int, int]]] = None,
+        size: Optional[Tuple[Tuple[int, int], Tuple[int, int]]] = None,
         disp_rotation: Literal[0, 90, 180, 270] = 0,
         touch_flip: Tuple[bool, bool] = (False, False),
     ) -> None:
@@ -335,7 +333,9 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         super().__init__()
 
     @property
-    def touch_point(self) -> Tuple[int, int, int]:  # pylint: disable=too-many-branches
+    def touch_point(  # pylint: disable=too-many-branches
+        self,
+    ) -> Optional[Tuple[int, int, int]]:
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -379,7 +379,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             return (x, y, pressure)
         return None
 
-    def _read_register(self, register: int, length: int) -> List[int]:
+    def _read_register(self, register: int, length: int) -> bytearray:
         """Low level register reading over I2C, returns a list of values."""
         with self._i2c as i2c:
             i2c.write(bytearray([register & 0xFF]))
@@ -474,7 +474,9 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         super().__init__()
 
     @property
-    def touch_point(self) -> Tuple[int, int, int]:  # pylint: disable=too-many-branches
+    def touch_point(  # pylint: disable=too-many-branches
+        self,
+    ) -> Optional[Tuple[int, int, int]]:
         """Read latest touched point value and convert to calibration-adjusted
         and rotated display coordinates. Commpatible with Displayio Button.
         :return: x, y, pressure
@@ -520,7 +522,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
 
     # pylint: disable=no-member
     # Disable should be reconsidered when refactor can be tested.
-    def _read_register(self, register: int, length: int) -> List[int]:
+    def _read_register(self, register: int, length: int) -> bytearray:
         """Low level register reading over SPI, returns a list of values."""
         register = (register | 0x80) & 0xFF  # Read single byte, bit 7 high.
         with self._spi as spi:
