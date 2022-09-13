@@ -38,7 +38,9 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
-def map_range(x: float, in_min: int, in_max: int, out_min: int, out_max: int) -> float:
+def map_range(
+    x: float, in_min: float, in_max: float, out_min: float, out_max: float
+) -> float:
     """
     Maps a value from one range to another. Values beyond the input minimum or
     maximum will be limited to the minimum or maximum of the output range.
@@ -433,7 +435,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         spi: SPI,
         cs: Pin,
         baudrate: int = 1000000,
-        calibration: Optional[Tuple[int, int]] = None,
+        calibration: Optional[Tuple[Tuple[int, int], Tuple[int, int]]] = None,
         size: Optional[Tuple[int, int]] = None,
         disp_rotation: Literal[0, 90, 180, 270] = 0,
         touch_flip: Tuple[bool, bool] = (False, False),
