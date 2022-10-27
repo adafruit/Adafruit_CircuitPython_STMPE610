@@ -471,7 +471,6 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
                 raise RuntimeError(
                     f"Failed to find STMPE610 controller! Chip Version {hex(version).upper()}. "
                     "If you are using the breakout, verify you are in SPI mode."
-                    % version
                 )
         super().__init__()
 
