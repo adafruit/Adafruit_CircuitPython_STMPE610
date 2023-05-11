@@ -307,7 +307,6 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         disp_rotation: Literal[0, 90, 180, 270] = 0,
         touch_flip: Tuple[bool, bool] = (False, False),
     ) -> None:
-
         self._calib = calibration
         self._disp_size = size
         self._disp_rotation = disp_rotation
@@ -440,7 +439,6 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         disp_rotation: Literal[0, 90, 180, 270] = 0,
         touch_flip: Tuple[bool, bool] = (False, False),
     ) -> None:
-
         self._calib = calibration
         self._disp_size = size
         self._disp_rotation = disp_rotation
