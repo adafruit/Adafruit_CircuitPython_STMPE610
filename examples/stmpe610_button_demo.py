@@ -61,7 +61,7 @@ ts = adafruit_stmpe610.Adafruit_STMPE610_SPI(
 
 # Create the displayio group and show it
 splash = displayio.Group()
-display.show(splash)
+display.root_group = splash
 
 # Defiine the button
 button = Button(
