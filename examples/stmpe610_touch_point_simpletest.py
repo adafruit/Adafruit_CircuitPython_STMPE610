@@ -7,6 +7,7 @@ Simple print-to-REPL demo using the STMPE610 resistive touch controller.
 
 import board
 import digitalio
+
 import adafruit_stmpe610
 
 # Instantiate the touchpad

@@ -33,16 +33,18 @@ calibration tuple for screen coordinate conversion accuracy.
 """
 
 import time
+
 import board
 import digitalio
 import displayio
-import vectorio
 import terminalio
+import vectorio
 from adafruit_display_text.label import Label
 
 # from adafruit_hx8357 import HX8357
 from adafruit_ili9341 import ILI9341
 from simpleio import map_range
+
 import adafruit_stmpe610
 
 # Operational parameters:
@@ -65,9 +67,7 @@ WHITE = 0xFFFFFF  # Text
 displayio.release_displays()
 
 # Define the display's SPI bus connection
-disp_bus = displayio.FourWire(
-    board.SPI(), command=board.D10, chip_select=board.D9, reset=None
-)
+disp_bus = displayio.FourWire(board.SPI(), command=board.D10, chip_select=board.D9, reset=None)
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
 display = ILI9341(disp_bus, width=320, height=240)
@@ -79,7 +79,7 @@ _touch_flip = (False, True)"""
 
 # Check rotation value and update display.
 # Always set rotation before instantiating the touchscreen.
-if DISPLAY_ROTATION is not None and DISPLAY_ROTATION in (0, 90, 180, 270):
+if DISPLAY_ROTATION is not None and DISPLAY_ROTATION in {0, 90, 180, 270}:
     display.rotation = DISPLAY_ROTATION
 else:
     print("Warning: invalid rotation value -- defalting to zero")

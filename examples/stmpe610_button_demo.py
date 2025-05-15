@@ -9,14 +9,16 @@ Author(s): ladyada, CedarGroveMakerStudios
 """
 
 import time
+
 import board
 import digitalio
 import displayio
 import terminalio
+from adafruit_button import Button
 
 # from adafruit_hx8357 import HX8357
 from adafruit_ili9341 import ILI9341
-from adafruit_button import Button
+
 import adafruit_stmpe610
 
 # --| Button Config |-------------------------------------------------
@@ -33,9 +35,7 @@ BUTTON_LABEL_COLOR = 0x000000
 
 # Release any resources currently in use for the displays
 displayio.release_displays()
-disp_bus = displayio.FourWire(
-    board.SPI(), command=board.D10, chip_select=board.D9, reset=None
-)
+disp_bus = displayio.FourWire(board.SPI(), command=board.D10, chip_select=board.D9, reset=None)
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
 display = ILI9341(disp_bus, width=320, height=240)

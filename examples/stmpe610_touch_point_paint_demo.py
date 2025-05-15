@@ -9,7 +9,8 @@ display (#3315) with the STMPE610 resistive touch controller.
 import board
 import digitalio
 import displayio
-from adafruit_rgb_display import ili9341, color565
+from adafruit_rgb_display import color565, ili9341
+
 import adafruit_stmpe610
 
 # Release any resources currently in use for the display

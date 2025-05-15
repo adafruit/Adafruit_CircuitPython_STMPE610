@@ -24,13 +24,15 @@ Implementation Notes
 """
 
 import time
+
 from micropython import const
 
 try:
     from typing import Dict, List, Optional, Tuple
-    from typing_extensions import Literal
-    from microcontroller import Pin
+
     from busio import I2C, SPI
+    from microcontroller import Pin
+    from typing_extensions import Literal
 except ImportError:
     pass
 
@@ -38,9 +40,7 @@ __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_STMPE610.git"
 
 
-def map_range(
-    x: float, in_min: float, in_max: float, out_min: float, out_max: float
-) -> float:
+def map_range(x: float, in_min: float, in_max: float, out_min: float, out_max: float) -> float:
     """
     Maps a value from one range to another. Values beyond the input minimum or
     maximum will be limited to the minimum or maximum of the output range.
@@ -180,9 +180,7 @@ class Adafruit_STMPE610:
         self._write_register_byte(_STMPE_ADC_CTRL2, _STMPE_ADC_CTRL2_6_5MHZ)
         self._write_register_byte(
             _STMPE_TSC_CFG,
-            _STMPE_TSC_CFG_4SAMPLE
-            | _STMPE_TSC_CFG_DELAY_1MS
-            | _STMPE_TSC_CFG_SETTLE_5MS,
+            _STMPE_TSC_CFG_4SAMPLE | _STMPE_TSC_CFG_DELAY_1MS | _STMPE_TSC_CFG_SETTLE_5MS,
         )
         self._write_register_byte(_STMPE_TSC_FRACTION_Z, 0x6)
         self._write_register_byte(_STMPE_FIFO_TH, 1)
@@ -298,7 +296,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         i2c: I2C,
         address: int = _STMPE_ADDR,
@@ -318,23 +316,21 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
         if not self._disp_size:
             self._disp_size = (4095, 4095)
 
-        if self._disp_rotation not in (0, 90, 180, 270):
+        if self._disp_rotation not in {0, 90, 180, 270}:
             raise ValueError("Display rotation value must be 0, 90, 180, or 270")
 
         # Check that the STMPE610 was found.
-        import adafruit_bus_device.i2c_device as i2cdev  # pylint: disable=import-outside-toplevel
+        import adafruit_bus_device.i2c_device as i2cdev
 
         self._i2c = i2cdev.I2CDevice(i2c, address)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
-            raise RuntimeError(
-                f"Failed to find STMPE610! Chip Version {hex(version).upper()}."
-            )
+            raise RuntimeError(f"Failed to find STMPE610! Chip Version {hex(version).upper()}.")
         super().__init__()
 
     @property
-    def touch_point(  # pylint: disable=too-many-branches
+    def touch_point(
         self,
     ) -> Optional[Tuple[int, int, int]]:
         """Read latest touched point value and convert to calibration-adjusted
@@ -346,7 +342,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
             while not self.buffer_empty:
                 x_loc, y_loc, pressure = self.read_data()
             # Swap touch axis range minimum and maximum if needed
-            if self._disp_rotation in (0, 180):
+            if self._disp_rotation in {0, 180}:
                 if self._touch_flip and self._touch_flip[0]:
                     x_c = (self._calib[0][1], self._calib[0][0])
                 else:
@@ -355,7 +351,7 @@ class Adafruit_STMPE610_I2C(Adafruit_STMPE610):
                     y_c = (self._calib[1][1], self._calib[1][0])
                 else:
                     y_c = (self._calib[1][0], self._calib[1][1])
-            if self._disp_rotation in (90, 270):
+            if self._disp_rotation in {90, 270}:
                 if self._touch_flip[1]:
                     x_c = (self._calib[1][1], self._calib[1][0])
                 else:
@@ -429,7 +425,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
 
     """
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         spi: SPI,
         cs: Pin,
@@ -450,20 +446,18 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         if not self._disp_size:
             self._disp_size = (4095, 4095)
 
-        if self._disp_rotation not in (0, 90, 180, 270):
+        if self._disp_rotation not in {0, 90, 180, 270}:
             raise ValueError("Display rotation value must be 0, 90, 180, or 270")
 
         # Check that the STMPE610 was found.
-        import adafruit_bus_device.spi_device as spidev  # pylint: disable=import-outside-toplevel
+        import adafruit_bus_device.spi_device as spidev
 
         self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate)
         # Check device version.
         version = self.get_version
         if _STMPE_VERSION != version:
             # If it fails try SPI MODE 1  -- that is what Arduino does
-            self._spi = spidev.SPIDevice(
-                spi, cs, baudrate=baudrate, polarity=0, phase=1
-            )
+            self._spi = spidev.SPIDevice(spi, cs, baudrate=baudrate, polarity=0, phase=1)
             version = self.get_version
             if _STMPE_VERSION != version:
                 raise RuntimeError(
@@ -473,7 +467,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
         super().__init__()
 
     @property
-    def touch_point(  # pylint: disable=too-many-branches
+    def touch_point(
         self,
     ) -> Optional[Tuple[int, int, int]]:
         """Read latest touched point value and convert to calibration-adjusted
@@ -485,7 +479,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             while not self.buffer_empty:
                 x_loc, y_loc, pressure = self.read_data()
             # Swap touch axis range minimum and maximum if needed
-            if self._disp_rotation in (0, 180):
+            if self._disp_rotation in {0, 180}:
                 if self._touch_flip and self._touch_flip[0]:
                     x_c = (self._calib[0][1], self._calib[0][0])
                 else:
@@ -494,7 +488,7 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
                     y_c = (self._calib[1][1], self._calib[1][0])
                 else:
                     y_c = (self._calib[1][0], self._calib[1][1])
-            if self._disp_rotation in (90, 270):
+            if self._disp_rotation in {90, 270}:
                 if self._touch_flip[1]:
                     x_c = (self._calib[1][1], self._calib[1][0])
                 else:
@@ -519,7 +513,6 @@ class Adafruit_STMPE610_SPI(Adafruit_STMPE610):
             return (x, y, pressure)
         return None
 
-    # pylint: disable=no-member
     # Disable should be reconsidered when refactor can be tested.
     def _read_register(self, register: int, length: int) -> bytearray:
         """Low level register reading over SPI, returns a list of values."""
