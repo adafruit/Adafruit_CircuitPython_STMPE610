@@ -6,10 +6,11 @@ Simple painting demo that draws on an Adafruit capacitive touch shield with
 ILI9341 display and STMPE610 resistive touch driver
 """
 
-import busio
 import board
+import busio
 import digitalio
-from adafruit_rgb_display import ili9341, color565
+from adafruit_rgb_display import color565, ili9341
+
 import adafruit_stmpe610
 
 # Create library object using our Bus SPI port

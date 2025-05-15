@@ -1,9 +1,10 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
-import busio
 import board
+import busio
 import digitalio
+
 from adafruit_stmpe610 import Adafruit_STMPE610_SPI
 
 spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
