@@ -37,6 +37,7 @@ import time
 import board
 import digitalio
 import displayio
+import fourwire
 import terminalio
 import vectorio
 from adafruit_display_text.label import Label
@@ -67,7 +68,7 @@ WHITE = 0xFFFFFF  # Text
 displayio.release_displays()
 
 # Define the display's SPI bus connection
-disp_bus = displayio.FourWire(board.SPI(), command=board.D10, chip_select=board.D9, reset=None)
+disp_bus = fourwire.FourWire(board.SPI(), command=board.D10, chip_select=board.D9, reset=None)
 
 # Instantiate the 2.4" 320x240 TFT FeatherWing (#3315).
 display = ILI9341(disp_bus, width=320, height=240)
